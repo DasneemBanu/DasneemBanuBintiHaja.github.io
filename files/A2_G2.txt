@@ -1,0 +1,177 @@
+//DASNEEM BANU BINTI HAJA(A24CS0066)//
+//NUREEN FATINI BINTI ZULKEFLI(A24CS0169)//
+//ASSIGNMENT 2//
+
+
+//QUESTION 1
+
+#include<iostream>
+using namespace std;
+
+double celsiusToFahrenheit (double celsius, double fahrenheit);
+void classificafion (double fahrenheit);
+
+double celsiusToFahrenheit (double celsius, double fahrenheit)
+{
+	fahrenheit = ((9.0/5.0) * celsius) + 32.0;
+	return fahrenheit;
+}
+
+void classification (double fahrenheit)
+{
+	if (fahrenheit < 50)
+	{
+		cout<<"Category: Cold"<<endl;
+		cout<<endl;
+	}
+	else if ((fahrenheit >= 50) && (fahrenheit <= 77))
+	{
+		cout<<"Category: Moderate"<<endl;
+		cout<<endl;
+	}
+	else if (fahrenheit > 77)
+	{
+		cout<<"Category: Hot"<<endl;
+		cout<<endl;
+	}
+}
+
+int main()
+{
+	double celsius;
+	double fahrenheit;
+	
+	do
+	{
+		cout<<"Enter temperature in celsius (-999 to stop): ";
+		cin>>celsius;
+		
+			if (celsius == -999)
+			{
+				cout<<"Program terminated.";
+				break;
+			}
+		
+		fahrenheit = celsiusToFahrenheit (celsius,fahrenheit);
+		cout<<"Temperature in Fahrenheit: "<< fahrenheit <<"°F"<<endl;
+		
+		classification (fahrenheit);
+		
+	}
+	while (true);
+	
+	return 0;
+}
+
+
+
+//QUESTION 2
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+void displayBooksBorrowedByStudent (string books[10][3], int studentID, int numBooks[], int numStudents);
+void calculateBorrowingStats (int numBooks[], int numStudents, int &totalBooks ,int &mostBooksStudent);
+
+
+void displayBooksBorrowedByStudent (string books[10][3], int studentID, int numBooks[], int numStudents)
+{
+	cout<<"Enter a student ID to view their borrowed books: ";
+	cin>>studentID;
+	studentID--;
+	
+	cout<<"Books borrowed by Student "<< studentID +1 << ": "<<endl;
+	for(int i = 0; i < numBooks[studentID]; i++ )
+	{
+		cout<<"- ";
+		cout<<books[studentID][i]<<endl;
+	}
+	cout<<endl;
+}
+
+void calculateBorrowingStats (int numBooks[], int numStudents, int &totalBooks ,int &mostBooksStudent)
+{
+	int maxBooks = 0;
+	
+	for(int d = 0; d < numStudents; d++)
+	{
+		totalBooks = totalBooks + numBooks[d];
+			if (numBooks[d] > maxBooks)
+			{
+				maxBooks = numBooks[d];
+				mostBooksStudent = d+1;
+			}
+	}
+}
+
+int main()
+{
+	int numStudents;
+	int numBooks[3];
+	string books[10][3];
+	int totalBooks = 0;
+	int mostBooksStudent = 0;
+	int studentID = 0;
+	
+	cout<<"Enter the number of students (max 10): ";
+	cin>>numStudents;
+	
+	for(int d = 0; d < numStudents; d++)
+	{
+		cout<<"Enter the number of books borrowed by Student "<< d + 1 <<" (max 3): ";
+		cin>>numBooks[d];
+		
+		while ((numBooks[d] < 0) || (numBooks[d] > 3))
+		{
+			cout<<"Invalid number. Enter again between 0 and 3: ";
+			cin>>numBooks[d];
+		}
+		
+		cin.ignore();
+		for(int i=0; i<numBooks[d];i++)
+		{
+			cout<<"Enter the title of book "<< i+1 <<": ";
+			getline(cin, books[d][i]);
+		}
+		
+	}
+	cout<<endl;
+	cout<<"Borrowing Records: "<<endl;
+	cout<<"Student\tBooks\t"<<endl;
+	
+	for(int d = 0; d < numStudents; d++)
+	{
+		cout<< d+1 <<"\t";
+		
+		for(int i=0; i < numBooks[d]; i++)
+		{
+			if (i>0)
+			{
+				cout<<",";
+			}
+			cout<<books[d][i];
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	
+	calculateBorrowingStats (numBooks, numStudents, totalBooks , mostBooksStudent);
+	displayBooksBorrowedByStudent (books, studentID, numBooks, numStudents);
+	
+	cout<<endl;
+	
+	cout<<"Total books borrowed by all students: "<< totalBooks<<endl;
+	cout<<"Students who borrowed the most books: Student " << mostBooksStudent <<endl;
+	
+	return 0 ;
+}
+
+
+
+
+
+
+
+
+

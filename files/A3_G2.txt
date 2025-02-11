@@ -1,0 +1,141 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+
+
+ 
+void getInput(std::string universities[], int intake[], int enrolment[], int output[], int &count);
+int total(const int arr[], int count);
+int lowestNum(const int arr[], int count);
+int highestNum(const int arr[], int count);
+
+const int billUni = 20; 
+
+int main() {
+    std::string universities[billUni];
+    int intake[billUni], enrolment[billUni], output[billUni];
+    int count = 0;
+  
+    getInput(universities, intake, enrolment, output, count);
+
+    int totalIntake = total(intake, count);
+    int totalEnrolment = total(enrolment, count);
+    int totalOutput = total(output, count);
+
+    double avgIntake = static_cast<double>(totalIntake) / count;
+    double avgEnrolment = static_cast<double>(totalEnrolment) / count;
+    double avgOutput = static_cast<double>(totalOutput) / count;
+
+    int lowestIntake = lowestNum(intake, count);
+    int highestIntake = highestNum(intake, count);
+
+    int lowestEnroll = lowestNum(enrolment, count);
+    int highestEnroll = highestNum(enrolment, count);
+
+    int lowestOutput = lowestNum(output, count);
+    int highestOutput = highestNum(output, count);
+
+    int intakeRange = intake[highestIntake] - intake[lowestIntake];
+    int enrolmentRange = enrolment[highestEnroll] - enrolment[lowestEnroll];
+    int outputRange = output[highestOutput] - output[lowestOutput];
+
+    std::ofstream outputFile("output.txt");
+    if (!outputFile.is_open()) {
+        std::cout << "Error: Unable to open the file 'output.txt' for writing." ;
+    }
+
+    outputFile << std::fixed << std::setprecision(2);
+    outputFile << "     NUMBER OF STUDENTS' INTAKE, ENROLMENT AND OUTPUT\n";
+    outputFile << "     IN PUBLIC UNIVERSITIES (2024)\n";
+    outputFile << "----------------------------------------------------------------------\n";
+    outputFile << "University                    Intake         Enrolment      Output\n";
+    outputFile << "----------------------------------------------------------------------\n";
+
+    for (int i = 0; i < count; ++i) {
+        outputFile << std::setw(30) << std::left << universities[i]
+                   << std::setw(15) <<  intake[i]
+                   << std::setw(15) << enrolment[i]
+                   << std::setw(15) << output[i] << "\n";
+    }
+
+    outputFile << "----------------------------------------------------------------------\n";
+    outputFile << "TOTAL                         " << totalIntake << "         "
+               << totalEnrolment << "         " << totalOutput << "\n";
+    outputFile << "AVERAGE                       " << avgIntake << "      "
+               << avgEnrolment << "      " << avgOutput << "\n";
+    outputFile << "----------------------------------------------------------------------\n";
+
+    outputFile << "THE LOWEST NUMBER OF STUDENTS' INTAKE = " << intake[lowestIntake]
+               << " (" << universities[lowestIntake] << ")\n";
+    outputFile << "THE HIGHEST NUMBER OF STUDENTS' INTAKE = " << intake[highestIntake]
+               << " (" << universities[highestIntake] << ")\n\n";
+
+    outputFile << "THE LOWEST NUMBER OF STUDENTS' ENROLMENT = " << enrolment[lowestEnroll]
+               << " (" << universities[lowestEnroll] << ")\n";
+    outputFile << "THE HIGHEST NUMBER OF STUDENTS' ENROLMENT = " << enrolment[highestEnroll]
+               << " (" << universities[highestEnroll] << ")\n\n";
+
+    outputFile << "THE LOWEST NUMBER OF STUDENTS' OUTPUT = " << output[lowestOutput]
+               << " (" << universities[lowestOutput] << ")\n";
+    outputFile << "THE HIGHEST NUMBER OF STUDENTS' OUTPUT = " << output[highestOutput]
+               << " (" << universities[highestOutput] << ")\n\n";
+
+    outputFile << "Range of Intake: " << intakeRange << "\n";
+    outputFile << "Range of Enrolment: " << enrolmentRange << "\n";
+    outputFile << "Range of Output: " << outputRange << "\n";
+    outputFile << "----------------------------------------------------------------------\n";
+
+    outputFile.close();
+    std::cout << "The program has successfully written the results to 'output.txt'." ;
+
+    return 0;
+}
+
+//Task 1
+void getInput(std::string universities[], int intake[], int enrolment[], int output[], int &count) {
+    std::ifstream inputFile("input.txt");
+
+    if (!inputFile.is_open()) {
+        std::cout << "Error: Unable to open the file 'input.txt'." ;
+        exit;
+    }
+
+    count = 0;
+    while (count < billUni && inputFile >> universities[count] >> intake[count] >> enrolment[count] >> output[count]) {
+        count++;
+    }
+
+    inputFile.close();
+}
+
+// Task 2
+int total(const int arr[], int count) {
+    int total = 0;
+    for (int i = 0; i < count; ++i) {
+        total += arr[i];
+    }
+    return total;
+}
+
+// Task 3
+int lowestNum(const int arr[], int count) {
+    int lowest= 0;
+    for (int i = 1; i < count; ++i) {
+        if (arr[i] < arr[lowest]) {
+            lowest = i;
+        }
+    }
+    return lowest;
+}
+
+//Task 4
+int highestNum(const int arr[], int count) {
+    int highest = 0;
+    for (int i = 1; i < count; ++i) {
+        if (arr[i] > arr[highest]) {
+            highest = i;
+        }
+    }
+    return highest;
+}
